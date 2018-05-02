@@ -28,3 +28,5 @@ genfstab -U /mnt >> /mnt/etc/fstab
 
 curl -SsL https://api.bintray.com/content/habitat/stable/linux/x86_64/hab-%24latest-x86_64-linux.tar.gz?bt_package=hab-x86_64-linux -o /tmp/hab.tgz
 tar -xvzf /tmp/hab.tgz -C /mnt/usr/local/bin
+
+# arch-chroot /mnt

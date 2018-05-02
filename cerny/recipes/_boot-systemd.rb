@@ -1,6 +1,6 @@
 #
-# Cookbook:: _infrastructure
-# Recipe:: default
+# Cookbook:: cerny
+# Recipe:: _systemd-boot
 #
 # Copyright:: 2018, Nathan Cerny
 #
@@ -16,4 +16,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe "#{cookbook_name}::#{node['platform_family']}"
+return unless ::File.exist?('/sys/firmware/efi/efivars')
+
+execute 'Install systemd-boot' do
+  command 'bootctl --path=/boot install'
+end
+
+cookbook_file '/etc/pacman.d/hooks/systemd-boot.hook' do
+  source 'systemd-boot.hook'
+  owner 'root'
+  group 'root'
+  mode '0644'
+end
