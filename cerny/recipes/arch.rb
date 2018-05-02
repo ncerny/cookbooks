@@ -1,5 +1,5 @@
 #
-# Cookbook:: cerny
+# Cookbook:: core
 # Recipe:: arch
 #
 # Copyright:: 2018, Nathan Cerny
@@ -22,10 +22,12 @@ link '/etc/localtime' do
 end
 
 execute 'hwclock --systohc' do
+  ignore_failure true
   only_if { chroot? }
 end
 
 execute 'timedatectl set-local-rtc 0' do
+  ignore_failure true
   only_if { chroot? }
 end
 
@@ -120,4 +122,34 @@ end
   sudo
 ).each do |pkg|
   package pkg
+end
+
+systemd_network '10-bond0' do
+  match_driver %w(bnx2 igb e1000*)
+  network_bond 'bond0'
+end
+
+systemd_network '10-bond1' do
+  match_driver %w(mlx4* ixgbe)
+  network_bond 'bond1'
+  link_mtu_bytes '9000'
+end
+
+systemd_network '20-bond0' do
+  match_name 'bond0'
+  network_dhcp true
+  network_i_pv6_accept_ra true
+  network_i_pv6_privacy_extensions 'prefer-public'
+end
+
+node['network']['interfaces']['bond0']['addresses'].each do |k, v|
+  next unless v['family'].eql?(inet)
+  systemd_network '20-bond1' do
+    match_name 'bond1'
+    network_dhcp false
+    network_address k.sub('192.168', '172.16')
+    link_mtu_bytes '9000'
+    network_i_pv6_accept_ra true
+    network_i_pv6_privacy_extensions 'yes'
+  end
 end

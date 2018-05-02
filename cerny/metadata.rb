@@ -1,9 +1,9 @@
-name 'cerny'
+name 'core'
 maintainer 'Nathan Cerny'
 maintainer_email 'ncerny@gmail.com'
 license 'Apache-2.0'
-description 'Installs/Configures cerny base infrastructure'
-long_description 'Installs/Configures cerny base infrastructure'
+description 'Installs/Configures cerny core infrastructure'
+long_description 'Installs/Configures cerny core infrastructure'
 version '0.1.0'
 chef_version '>= 12.14' if respond_to?(:chef_version)
 

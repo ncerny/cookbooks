@@ -1,5 +1,5 @@
 #
-# Cookbook:: cerny
+# Cookbook:: core
 # Recipe:: _systemd-boot
 #
 # Copyright:: 2018, Nathan Cerny

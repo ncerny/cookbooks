@@ -1,5 +1,5 @@
 #
-# Cookbook:: cerny
+# Cookbook:: core
 # Recipe:: _boot-grub
 #
 # Copyright:: 2018, Nathan Cerny

@@ -1,5 +1,5 @@
 #
-# Cookbook:: _infrastructure
+# Cookbook:: core
 # Recipe:: default
 #
 # Copyright:: 2018, Nathan Cerny
