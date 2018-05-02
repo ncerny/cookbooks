@@ -19,7 +19,7 @@
 include_recipe "#{cookbook_name}::#{node['platform_family']}"
 
 systemd_network '10-bond0' do
-  match_driver %w(bnx2 igb)
+  match_driver %w(bnx2 igb e1000e)
   network_bond 'bond0'
 end
 
