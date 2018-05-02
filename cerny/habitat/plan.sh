@@ -29,7 +29,7 @@ do_build() {
 
 do_install() {
   export GEM_PATH=$(pkg_path_for "core/ruby24")/lib/ruby/2.4.0:$(pkg_path_for "ncerny/berkshelf")/lib/ruby/2.4.0
-  berks update
+  berks install
   berks vendor cookbooks
   mv cookbooks $pkg_prefix
 }
