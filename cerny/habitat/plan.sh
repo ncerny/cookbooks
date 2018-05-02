@@ -1,6 +1,6 @@
-pkg_name=cerny-cookbook
+pkg_name=$(awk '/^name/ { tmp=substr($2,2,length($2)-2); print tmp }' ../metadata.rb)
 pkg_origin=ncerny
-pkg_version=$(awk '/^version/ { ver=substr($2,2,length($2)-2); print ver }' ../metadata.rb)
+pkg_version=$(awk '/^version/ { tmp=substr($2,2,length($2)-2); print tmp }' ../metadata.rb)
 pkg_maintainer="Nathan Cerny <ncerny@gmail.com>"
 pkg_license=("Apache-2.0")
 pkg_deps=(ncerny/chef)
