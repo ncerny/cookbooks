@@ -22,17 +22,16 @@ link '/etc/localtime' do
 end
 
 execute 'hwclock --systohc' do
-  ignore_failure true
   only_if { chroot? }
 end
 
 execute 'timedatectl set-local-rtc 0' do
   ignore_failure true
-  only_if { chroot? }
+  not_if { chroot? }
 end
 
 execute 'timedatectl set-ntp true' do
-  only_if { chroot? }
+  not_if { chroot? }
 end
 
 file '/etc/locale.gen' do
@@ -100,22 +99,6 @@ directory '/etc/pacman.d/hooks/'
 
 include_recipe "#{cookbook_name}::_boot-grub"
 
-service 'systemd-timesyncd' do
-  if chroot?
-    action :enable
-  else
-    action [:enable, :start]
-  end
-end
-
-service 'systemd-networkd' do
-  if chroot?
-    action :enable
-  else
-    action [:enable, :start]
-  end
-end
-
 # xfsprogs
 %w(
   openssh
@@ -152,4 +135,18 @@ node['network']['interfaces']['bond0']['addresses'].each do |k, v|
     network_i_pv6_accept_ra true
     network_i_pv6_privacy_extensions 'yes'
   end
+end if node['network']['interfaces']['bond0']
+
+service 'systemd-timesyncd' do
+  action [:enable, :start]
+end
+
+service 'systemd-networkd' do
+  action [:enable, :start]
+end
+
+reboot 'Reboot into Arch Linux install' do
+  action :request_reboot
+  reason 'Need to reboot into Arch Linux'
+  only_if { chroot? }
 end
