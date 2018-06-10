@@ -1,6 +1,6 @@
 #
 # Cookbook:: cerny-cc
-# Recipe:: glusterfs
+# Recipe:: cl_storage
 #
 # Copyright:: 2018, Nathan Cerny
 #
@@ -30,4 +30,6 @@ systemd_mount 'mnt-gv0' do
   mount_what "#{node['hostname']}:/gv0"
   mount_type 'glusterfs'
   only_if 'gluster volume info gv0'
+  install_wanted_by 'multi-user.target'
+  unit_after 'glusterd.service'
 end

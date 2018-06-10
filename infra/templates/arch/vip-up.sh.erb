@@ -8,3 +8,7 @@ IP=$2
 for host in unifi-sg1 unifi-sw1; do
   arping -s ${IP} -c 15 -I ens2 ${host}.home.cerny.cc -f
 done
+
+<% for svc in node['infra']['services'] do -%>
+  systemctl start <%= svc %>
+<% end -%>

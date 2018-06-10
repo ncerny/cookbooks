@@ -35,6 +35,7 @@ systemd_timer 'sync-hwclock' do
     on_unit_active_sec '30 days'
     on_boot_sec '30 seconds'
   end
+  install_wanted_by 'multi-user.target'
 end
 
 service 'systemd-timesyncd' do

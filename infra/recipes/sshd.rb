@@ -1,5 +1,5 @@
 #
-# Cookbook:: workstation
+# Cookbook:: infra
 # Recipe:: sshd
 #
 # Copyright:: 2018, Nathan Cerny

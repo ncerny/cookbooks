@@ -19,6 +19,7 @@
 systemd_swap 'dev-sda3' do
   action [:create, :enable, :start]
   swap_what '/dev/sda3'
+  install_wanted_by 'multi-user.target'
 end
 
 file '/etc/locale.gen' do
@@ -40,27 +41,41 @@ systemd_service 'pacman-update-mirrors' do
   action [:create]
   service do
     type 'oneshot'
-    exec_start_pre '/usr/bin/curl -s "https://www.archlinux.org/mirrorlist/?country=US&protocol=https&ip_version=6&use_mirror_status=on" -o /etc/pacman.d/mirrorlist.new'
-    exec_start_pre '/usr/bin/sed -i -e "s/^#Server/Server/" -e "/^#/d" /etc/pacman.d/mirrorlist.new'
-    exec_start '/usr/bin/rankmirrors -n 5 /etc/pacman.d/mirrorlist.new > /etc/pacman.d/mirrorlist'
-    exec_start_post '/usr/bin/rm /etc/pacman.d/mirrorlist.new'
+    exec_start '/usr/bin/curl -s -o /etc/pacman.d/mirrorlist_full "https://www.archlinux.org/mirrorlist/?country=US&protocol=https&ip_version=6&use_mirror_status=on"'
+    exec_start_post '/usr/bin/sed -i -e "s/^#Server/Server/" /etc/pacman.d/mirrorlist_full'
   end
 end
 
 systemd_timer 'pacman-update-mirrors' do
   action [:create, :enable, :start]
-  timer_on_calendar '*-*-* 02:00:00'
+  timer_on_calendar 'Sun *-*-* 01:00:00'
+  install_wanted_by 'multi-user.target'
+end
+
+systemd_service 'pacman-rank-mirror' do
+  action :create
+  service do
+    type 'oneshot'
+    exec_start '/bin/sh -c "/usr/bin/rankmirrors /etc/pacman.d/mirrorlist_full > /etc/pacman.d/mirrorlist"'
+  end
+end
+
+systemd_path 'pacman-rank-mirror' do
+  action [:create, :enable, :start]
+  path_path_changed '/etc/pacman.d/mirrorlist_full'
+  install_wanted_by 'multi-user.target'
 end
 
 systemd_service 'sync-pacman' do
   action [:create]
   service do
     type 'oneshot'
-    exec_start '/usr/bin/pacman -Syu'
+    exec_start '/usr/bin/pacman -Syu --noconfirm'
   end
 end
 
 systemd_timer 'sync-pacman' do
   action [:create, :enable, :start]
-  timer_on_calendar '*-*-* 04:00:00'
+  timer_on_calendar '*-*-* 02:00:00'
+  install_wanted_by 'multi-user.target'
 end

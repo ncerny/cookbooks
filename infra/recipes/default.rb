@@ -24,5 +24,9 @@ include_recipe "#{cookbook_name}::boot"
 include_recipe "#{cookbook_name}::hab"
 include_recipe "#{cookbook_name}::cl_storage"
 include_recipe "#{cookbook_name}::cl_vip"
+include_recipe "#{cookbook_name}::cl_services"
+include_recipe "#{cookbook_name}::tftpd"
 
-package 'sudo'
+node['infra']['additional_packages'].each do |pkg|
+  package pkg
+end

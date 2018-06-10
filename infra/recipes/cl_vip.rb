@@ -18,15 +18,15 @@
 
 package 'ucarp'
 
-cookbook_file '/usr/local/bin/vip-up.sh' do
-  source 'vip-up.sh'
+template '/usr/local/bin/vip-up.sh' do
+  source 'vip-up.sh.erb'
   owner 'root'
   group 'root'
   mode '0700'
 end
 
-cookbook_file '/usr/local/bin/vip-down.sh' do
-  source 'vip-down.sh'
+template '/usr/local/bin/vip-down.sh' do
+  source 'vip-down.sh.erb'
   owner 'root'
   group 'root'
   mode '0700'
@@ -51,6 +51,7 @@ systemd_service 'ucarp' do
     kill_mode 'process'
     restart 'always'
   end
+  install_wanted_by 'multi-user.target'
 end
 
 service 'ucarp' do
