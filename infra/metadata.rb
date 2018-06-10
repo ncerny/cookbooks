@@ -1,12 +1,12 @@
-name 'infra-cookbook'
+name 'infra'
 maintainer 'Nathan Cerny'
 maintainer_email 'ncerny@gmail.com'
 license 'Apache-2.0'
 description 'Cookbook for installing and configuring my base infrastructure.'
 long_description 'Cookbook for installing and configuring my base infrastructure.'
-version '0.2.0'
+version '0.9.1'
 chef_version '>= 12.1' if respond_to?(:chef_version)
-issues_url 'https://github.com/ncerny/infra-cookbook/issues'
-source_url 'https://github.com/ncerny/infra-cookbook'
+issues_url 'https://github.com/ncerny/cookbooks/issues'
+source_url 'https://github.com/ncerny/cookbooks'
 
-depends 'habitat'
+depends 'systemd'

@@ -1,6 +1,6 @@
 #
-# Cookbook:: workstation
-# Recipe:: default
+# Cookbook:: cerny-cc
+# Recipe:: time
 #
 # Copyright:: 2018, Nathan Cerny
 #
@@ -16,22 +16,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe "#{cookbook_name}::#{node['platform_family']}"
-
-group 'hab' do
-  gid 1234
+link '/etc/localtime' do
+  to '/usr/share/zoneinfo/US/Central'
+  link_type :symbolic
 end
 
-user 'hab' do
-  uid 1234
-  gid 1234
-  system true
-  home '/hab'
+systemd_service 'sync-hwclock' do
+  action :create
+  service do
+    type 'simple'
+    exec_start '/usr/bin/hwclock --systohc'
+  end
 end
 
-hab_install 'default'
+systemd_timer 'sync-hwclock' do
+  action [:create, :enable, :start]
+  timer do
+    on_unit_active_sec '30 days'
+    on_boot_sec '30 seconds'
+  end
+end
 
-hab_sup 'default' do
-  peer %w(kube01 kube02 kube03)
-  auto_update true
+service 'systemd-timesyncd' do
+  action [:enable, :start]
 end

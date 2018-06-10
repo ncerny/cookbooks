@@ -1,4 +1,4 @@
-pkg_name=infra-cookbook
+pkg_name=infra
 pkg_origin=ncerny
 pkg_version=$(awk '/^version/ { ver=substr($2,2,length($2)-2); print ver }' ../metadata.rb)
 pkg_maintainer="Nathan Cerny <ncerny@gmail.com>"

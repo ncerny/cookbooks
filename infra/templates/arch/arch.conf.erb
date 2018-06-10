@@ -1,0 +1,5 @@
+title   Arch Linux
+linux   /vmlinuz-linux
+<% if cpu_type.eql?('GenuineIntel') %>initrd  /intel-ucode.img<% end -%>
+initrd  /initramfs-linux.img
+options <%= @options %>
