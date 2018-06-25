@@ -1,9 +1,9 @@
 DEPENDENCIES
-  infra
+  virt
     path: .
     metadata: true
 
 GRAPH
-  infra (0.12.4)
-    systemd (>= 0.0.0)
   systemd (3.2.3)
+  virt (0.1.0)
+    systemd (>= 0.0.0)

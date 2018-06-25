@@ -1,6 +1,6 @@
 #
-# Cookbook:: workstation
-# Recipe:: hab
+# Cookbook:: build_cookbook
+# Recipe:: quality
 #
 # Copyright:: 2018, Nathan Cerny
 #
@@ -15,23 +15,4 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-group 'hab' do
-  gid 1234
-end
-
-user 'hab' do
-  uid 1234
-  gid 1234
-  system true
-  home '/hab'
-end
-
-systemd_service 'hab-sup' do
-  action [:create, :enable]
-  unit_description 'The Habitat Supervisor'
-  service do
-    exec_start '/bin/hab sup run --auto-update'
-  end
-  install_wanted_by 'multi-user.target'
-end
+include_recipe 'delivery-truck::quality'
