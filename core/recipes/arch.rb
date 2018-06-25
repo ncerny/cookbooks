@@ -62,19 +62,19 @@ execute 'Install and Enable Yaourt Package Tool' do
   not_if 'which yaourt'
 end
 
-execute 'Update AUR Repositories' do
-  command 'yaourt -Syu --noconfirm'
-  not_if { node['yaourt_last_refresh'] && (DateTime.now - DateTime.parse(node['yaourt_last_refresh'])) < 84601 }
-  notifies :run, 'ruby_block[update-yaourt-refresh-time]', :immediately
-  notifies :run, 'execute[grub-bios-install]', :delayed
-end
-
-ruby_block 'update-yaourt-refresh-time' do
-  action :nothing
-  block do
-    node.normal['yaourt_last_refresh'] = DateTime.now.to_s
-  end
-end
+# execute 'Update AUR Repositories' do
+#   command 'yaourt -Syu --noconfirm'
+#   not_if { node['yaourt_last_refresh'] && (DateTime.now - DateTime.parse(node['yaourt_last_refresh'])) < 84601 }
+#   notifies :run, 'ruby_block[update-yaourt-refresh-time]', :immediately
+#   notifies :run, 'execute[grub-bios-install]', :delayed
+# end
+#
+# ruby_block 'update-yaourt-refresh-time' do
+#   action :nothing
+#   block do
+#     node.normal['yaourt_last_refresh'] = DateTime.now.to_s
+#   end
+# end
 
 package 'reflector'
 
@@ -145,8 +145,8 @@ service 'systemd-networkd' do
   action [:enable, :start]
 end
 
-reboot 'Reboot into Arch Linux install' do
-  action :request_reboot
-  reason 'Need to reboot into Arch Linux'
-  only_if { chroot? }
-end
+# reboot 'Reboot into Arch Linux install' do
+#   action :request_reboot
+#   reason 'Need to reboot into Arch Linux'
+#   only_if { chroot? }
+# end
