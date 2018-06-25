@@ -1,6 +1,6 @@
 #
 # Cookbook:: workstation
-# Recipe:: default
+# Recipe:: hab
 #
 # Copyright:: 2018, Nathan Cerny
 #
@@ -16,8 +16,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe "#{cookbook_name}::#{node['platform_family']}"
-
 group 'hab' do
   gid 1234
 end
@@ -29,9 +27,14 @@ user 'hab' do
   home '/hab'
 end
 
-hab_install 'default'
+systemd_service 'hab-sup' do
+  unit_description 'The Habitat Supervisor'
+  service do
+    exec_start '/bin/hab sup run --permanent-peer --auto-update --peer infra01.home.cerny.cc --peer infra02.home.cerny.cc'
+  end
+  install_wanted_by 'multi-user.target'
+end
 
-hab_sup 'default' do
-  peer %w(kube01 kube02 kube03)
-  auto_update true
+service 'hab-sup' do
+  action [:enable, :start]
 end
