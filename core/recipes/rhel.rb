@@ -1,6 +1,6 @@
 #
 # Cookbook:: core
-# Recipe:: default
+# Recipe:: rhel
 #
 # Copyright:: 2018, Nathan Cerny
 #
@@ -15,10 +15,3 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
-chef_client_updater 'Update to the latest Chef Client'
-
-include_recipe 'audit'
-include_recipe 'chef-client::service'
-include_recipe 'chef-client::delete_validation'
-include_recipe "#{cookbook_name}::#{node['platform_family']}"
