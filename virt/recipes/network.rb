@@ -1,6 +1,6 @@
 #
-# Cookbook:: workstation
-# Recipe:: hab
+# Cookbook:: cerny-cc
+# Recipe:: network
 #
 # Copyright:: 2018, Nathan Cerny
 #
@@ -16,22 +16,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-group 'hab' do
-  gid 1234
+systemd_network 'infra' do
+  match_name 'ens2'
+  network_dhcp true
+  network_dns '192.168.2.1'
+  dhcp_use_dns false
 end
 
-user 'hab' do
-  uid 1234
-  gid 1234
-  system true
-  home '/hab'
-end
-
-systemd_service 'hab-sup' do
-  action [:create, :enable]
-  unit_description 'The Habitat Supervisor'
-  service do
-    exec_start '/bin/hab sup run --auto-update'
-  end
-  install_wanted_by 'multi-user.target'
+service 'systemd-networkd' do
+  action :enable
 end

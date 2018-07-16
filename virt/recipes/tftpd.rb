@@ -1,6 +1,6 @@
 #
-# Cookbook:: workstation
-# Recipe:: hab
+# Cookbook:: infra
+# Recipe:: tftpd
 #
 # Copyright:: 2018, Nathan Cerny
 #
@@ -16,22 +16,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-group 'hab' do
-  gid 1234
+package 'tftp-hpa'
+
+directory '/srv/tftp' do
+  action :delete
+  not_if { ::File.symlink?('/srv/tftp') }
 end
 
-user 'hab' do
-  uid 1234
-  gid 1234
-  system true
-  home '/hab'
+link '/srv/tftp' do
+  to '/mnt/gv0/tftp'
+  link_type :symbolic
 end
 
-systemd_service 'hab-sup' do
-  action [:create, :enable]
-  unit_description 'The Habitat Supervisor'
-  service do
-    exec_start '/bin/hab sup run --auto-update'
-  end
-  install_wanted_by 'multi-user.target'
+service 'tftpd' do
+  action [:enable, :start]
 end

@@ -1,6 +1,6 @@
 #
 # Cookbook:: cerny-cc
-# Recipe:: time
+# Recipe:: boot
 #
 # Copyright:: 2018, Nathan Cerny
 #
@@ -16,29 +16,31 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-link '/etc/localtime' do
-  to '/usr/share/zoneinfo/US/Central'
-  link_type :symbolic
+package 'intel-ucode' do
+  only_if { cpu_type.eql?('GenuineIntel') }
 end
 
-systemd_service 'sync-hwclock' do
-  action :create
-  unit_description 'Sync the Hardware Clock'
-  service do
-    type 'oneshot'
-    exec_start '/usr/bin/hwclock --systohc'
-  end
+directory '/etc/pacman.d/hooks'
+
+file '/etc/pacman.d/hooks/systemd-boot.hook' do
+  content <<-EOF
+    [Trigger]
+    Type = Package
+    Operation = Upgrade
+    Target = systemd
+
+    [Action]
+    Description = Updating systemd-boot
+    When = PostTransaction
+    Exec = /usr/bin/bootctl update
+  EOF
 end
 
-systemd_timer 'sync-hwclock' do
-  action [:create, :enable, :start]
-  timer do
-    on_unit_active_sec '30 days'
-    on_boot_sec '30 seconds'
-  end
-  install_wanted_by 'multi-user.target'
+cookbook_file '/boot/loader/loader.conf' do
+  source 'boot-loader.conf'
 end
 
-service 'systemd-timesyncd' do
-  action [:enable, :start]
+template '/boot/loader/entries/arch.conf' do
+  source 'arch.conf.erb'
+  variables options: 'root=LABEL=arch_os rw add_efi_memmap'
 end
