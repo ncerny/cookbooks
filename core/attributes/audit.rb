@@ -1,7 +1,7 @@
 default['audit']['reporter'] = 'chef-server-automate'
 default['audit']['fetcher'] = 'chef-server'
 default['audit']['interval']['enabled'] = true
-default['audit']['interval']['time'] = 1440
+default['audit']['interval']['time'] = 360
 default['audit']['profiles'] =
   case node['platform']
   when 'centos'
