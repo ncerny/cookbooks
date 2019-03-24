@@ -4,19 +4,13 @@ maintainer_email 'ncerny@gmail.com'
 license 'Apache-2.0'
 description 'Installs/Configures cerny core infrastructure'
 long_description 'Installs/Configures cerny core infrastructure'
-version '0.1.0'
+version '0.3.1'
 chef_version '>= 12.14' if respond_to?(:chef_version)
 
-# The `issues_url` points to the location where issues for this cookbook are
-# tracked.  A `View Issues` link will be displayed on this cookbook's page when
-# uploaded to a Supermarket.
-#
-# issues_url 'https://github.com/<insert_org_here>/_infrastructure/issues'
+issues_url 'https://github.com/ncerny/cookbooks/issues'
+source_url 'https://github.com/ncerny/cookbooks'
 
-# The `source_url` points to the development repository for this cookbook.  A
-# `View Source` link will be displayed on this cookbook's page when uploaded to
-# a Supermarket.
-#
-# source_url 'https://github.com/<insert_org_here>/_infrastructure'
-
+depends 'audit'
 depends 'systemd'
+depends 'chef_client_updater'
+depends 'chef-client'
