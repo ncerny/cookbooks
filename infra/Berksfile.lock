@@ -1,9 +1,0 @@
-DEPENDENCIES
-  infra
-    path: .
-    metadata: true
-
-GRAPH
-  infra (0.12.4)
-    systemd (>= 0.0.0)
-  systemd (3.2.3)

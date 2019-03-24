@@ -1,6 +1,6 @@
 #
-# Cookbook:: cerny-cc
-# Recipe:: cl_storage
+# Cookbook:: workstation
+# Recipe:: network
 #
 # Copyright:: 2018, Nathan Cerny
 #
@@ -16,23 +16,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-package 'glusterfs'
-
-systemd_mount 'export-data' do
-  action [:create, :enable, :start]
-  mount_what 'LABEL=data'
-  install_wanted_by 'default.target'
+systemd_network 'infra' do
+  match_name 'ens2'
+  network_dhcp true
 end
 
-log 'Please manually create Gluster Volume' do
-  not_if 'gluster volume info gv0'
-end
-
-systemd_mount 'mnt-gv0' do
-  action [:create, :enable, :start]
-  mount_what "#{node['hostname']}:/gv0"
-  mount_type 'glusterfs'
-  only_if 'gluster volume info gv0'
-  install_wanted_by 'multi-user.target'
-  unit_after 'glusterd.service'
+service 'systemd-networkd' do
+  action :enable
 end

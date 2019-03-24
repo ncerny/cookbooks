@@ -1,5 +1,5 @@
 #
-# Cookbook:: cerny-cc
+# Cookbook:: workstation
 # Recipe:: boot
 #
 # Copyright:: 2018, Nathan Cerny

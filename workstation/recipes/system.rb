@@ -1,5 +1,5 @@
 #
-# Cookbook:: cerny-cc
+# Cookbook:: workstation
 # Recipe:: system
 #
 # Copyright:: 2018, Nathan Cerny
@@ -20,6 +20,10 @@ systemd_swap 'dev-sda3' do
   action [:create, :enable, :start]
   swap_what '/dev/sda3'
   install_wanted_by 'multi-user.target'
+end
+
+sysctl 'vm.swappiness' do
+  value 10
 end
 
 file '/etc/locale.gen' do
@@ -48,7 +52,7 @@ end
 
 systemd_timer 'pacman-update-mirrors' do
   action [:create, :enable, :start]
-  timer_on_calendar 'Sun *-*-* 01:00:00'
+  timer_on_calendar 'Sun *-*-* 02:00:00'
   install_wanted_by 'multi-user.target'
 end
 
@@ -76,6 +80,6 @@ end
 
 systemd_timer 'sync-pacman' do
   action [:create, :enable, :start]
-  timer_on_calendar '*-*-* 02:00:00'
+  timer_on_calendar '*-*-* 04:00:00'
   install_wanted_by 'multi-user.target'
 end
