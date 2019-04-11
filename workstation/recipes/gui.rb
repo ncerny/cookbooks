@@ -95,6 +95,10 @@ service 'lightdm' do
   action :enable
 end
 
+link '/usr/share/xsessions/default.desktop' do
+  to '/usr/share/xsessions/awesome.desktop'
+end
+
 execute 'set-gui-default' do
   command '/usr/bin/systemctl set-default graphical.target'
   not_if "/usr/bin/systemctl get-default | grep graphical.target"

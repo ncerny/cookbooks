@@ -2,8 +2,10 @@
 # See the docs at https://www.habitat.sh/docs/create-packages-configure/.
 # You can safely delete this file if you don't need it.
 
-interval = 60
-splay = 0
-
-[configuration]
-local_mode = "true"
+log_level = "warn"
+chef_client_ident = ""
+run_lock_timeout = "1800"
+[data_collector]
+enable = "false"
+server_url = ""
+token = ""

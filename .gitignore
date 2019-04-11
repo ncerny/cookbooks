@@ -1,3 +1,5 @@
 results/
 .access_token
 .ruby-version
+.kitchen
+*.lock
