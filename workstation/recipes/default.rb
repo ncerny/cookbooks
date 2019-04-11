@@ -16,17 +16,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-include_recipe "#{cookbook_name}::network"
-include_recipe "#{cookbook_name}::sshd"
-include_recipe "#{cookbook_name}::time"
-include_recipe "#{cookbook_name}::system"
-include_recipe "#{cookbook_name}::boot"
-include_recipe "#{cookbook_name}::hab"
-include_recipe "#{cookbook_name}::cl_storage"
-include_recipe "#{cookbook_name}::cl_vip"
-include_recipe "#{cookbook_name}::cl_services"
-include_recipe "#{cookbook_name}::tftpd"
-
-node['infra']['additional_packages'].each do |pkg|
-  package pkg
+reboot 'now' do
+  action :nothing
+  reason 'Reboot to finish Workstation Configuration'
 end
+
+include_recipe "#{cookbook_name}::network"
+include_recipe "#{cookbook_name}::time"
+include_recipe "#{cookbook_name}::gui"
+# include_recipe "#{cookbook_name}::sshd"
+# include_recipe "#{cookbook_name}::system"
+# include_recipe "#{cookbook_name}::boot"
+# include_recipe "#{cookbook_name}::hab"
+# include_recipe "#{cookbook_name}::cl_storage"
+# include_recipe "#{cookbook_name}::cl_vip"
+# include_recipe "#{cookbook_name}::cl_services"
+# include_recipe "#{cookbook_name}::tftpd"
+#
+# node['infra']['additional_packages'].each do |pkg|
+#   package pkg
+# end

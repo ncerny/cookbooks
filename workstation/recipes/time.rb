@@ -21,22 +21,9 @@ link '/etc/localtime' do
   link_type :symbolic
 end
 
-systemd_service 'sync-hwclock' do
-  action :create
-  unit_description 'Sync the Hardware Clock'
-  service do
-    type 'oneshot'
-    exec_start '/usr/bin/hwclock --systohc'
-  end
-end
-
-systemd_timer 'sync-hwclock' do
-  action [:create, :enable, :start]
-  timer do
-    on_unit_active_sec '30 days'
-    on_boot_sec '30 seconds'
-  end
-  install_wanted_by 'multi-user.target'
+execute 'set-RTC-UTC' do
+  command '/usr/bin/timedatectl --adjust-system-clock set-local-rtc no'
+  not_if '/usr/bin/timedatectl show | grep LocalRTC=no'
 end
 
 service 'systemd-timesyncd' do
