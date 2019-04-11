@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-reboot 'now' do
+reboot 'workstation' do
   action :nothing
   reason 'Reboot to finish Workstation Configuration'
 end
