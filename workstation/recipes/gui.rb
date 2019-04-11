@@ -85,7 +85,7 @@ end
   end
 end
 
-%w( awesome lightdm slick-greeter konsole ).each do |pkg|
+%w( lightdm slick-greeter awesome konsole ).each do |pkg|
   package pkg do
     action :install
   end
@@ -98,5 +98,5 @@ end
 execute 'set-gui-default' do
   command '/usr/bin/systemctl set-default graphical.target'
   not_if "/usr/bin/systemctl get-default | grep graphical.target"
-  notifes :request_reboot, 'reboot[workstation]', :immediately
+  notifies :request_reboot, 'reboot[workstation]', :immediately
 end
