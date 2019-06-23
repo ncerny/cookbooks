@@ -1,0 +1,1 @@
+default['chocolatey']['upgrade'] = true
