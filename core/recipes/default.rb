@@ -21,4 +21,16 @@ reboot 'now' do
   reason 'Reboot to finish Configuration'
 end
 
+hab_install 'default' do
+  license 'accept'
+end
+
+hab_sup 'default'
+
+hab_svc 'ncerny/core' do
+  topology 'standalone'
+  strategy 'at-once'
+  channel node['core']['channel']
+end
+
 include_recipe "#{cookbook_name}::#{node['platform_family']}"

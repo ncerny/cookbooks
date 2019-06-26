@@ -12,3 +12,4 @@ source_url 'https://github.com/ncerny/cookbooks'
 
 depends 'systemd'
 depends 'chocolatey'
+depends 'habitat'
