@@ -6,4 +6,5 @@ $pkg_license=("Apache-2.0")
 $pkg_upstream_url="http://chef.io"
 $pkg_scaffolding="echohack/scaffolding-chef"
 $scaffold_policy_name="Policyfile"
-$scaffold_policyfiles_path="$PLAN_CONTEXT\.."
+$scaffold_policyfile_path="$PLAN_CONTEXT\.."
+$pkg_deps=@("stuartpreston/chef-client", "core/cacerts")
